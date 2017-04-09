@@ -3,10 +3,9 @@ appnope==0.1.0
 backports.shutil-get-terminal-size==1.0.0
 decorator==4.0.11
 Django==1.10.6
+docopt==0.4.0
 enum34==1.1.6
-ipdb==0.10.2
-ipython==5.3.0
-ipython-genutils==0.2.0
+mailchimp==2.0.9
 packaging==16.8
 pathlib2==2.2.1
 pexpect==4.2.1
