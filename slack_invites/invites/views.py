@@ -58,7 +58,7 @@ def index(request):
             if errors:
                 msg += 'Errors: {}</br>'.format(', '.join(errors))
             if invites_list:
-                msg += 'Invites sent for: {}'.format(', '.join(invites_list))
+                msg += 'Invite(s) sent for: {}'.format(', '.join(invites_list))
 
             form = EmailForm
             return render(request, 'index.html', {'form': form, 'msg': msg})
