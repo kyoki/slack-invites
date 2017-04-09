@@ -1,7 +1,6 @@
 <h1>Sign-up for our Slack</h1>
 
-{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-{% if msg %}<p>{{ msg }}<p/>{% endif %}
+{% if msg %}<p>{{ msg | safe }}<p/>{% endif %}
 
 <form action="/" method="post">
 {% csrf_token %}

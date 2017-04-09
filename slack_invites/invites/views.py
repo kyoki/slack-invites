@@ -27,29 +27,40 @@ def index(request):
             if not r.status_code == 200:
                 print r.content
 
-            msg = None
+            errors = []
+            invites_list = []
             data = json.loads(r.content)
             if 'ok' in data and not data['ok']:
-                form.add_error(None, data['error'])
-                return render(request, 'index.html', {'form': form, 'msg': msg})
+                errors.append(data['error'])
             else:
-                mailchimp_api = mailchimp.Mailchimp(settings.MAILCHIMP_API_KEY)
-                mailchimp_api.lists.subscribe('29b5ace6f2', {'email': email})
-                msg = 'Invite(s) sent to {} for: Slack, Mailchimp'.format(email)
+                invites_list.append('Slack')
 
-                r = requests.get(
-                    'https://civictools.appspot-preview.com/api/v1/invite',
-                    params = {
-                        'teamId': '-Kd27R2-vkjuWxHEQ23A',
-                        'secret': settings.AMPLIFY_SECRET,
-                        'email': email
-                    }
-                )
-                if not r.status_code == 200:
-                    msg += '\n Something went wrong with sendin the Amplify invite. Please ask the volunteer to take down your email address.'
-                else:
-                    msg += ', and Amplify'
-                form = EmailForm
-                return render(request, 'index.html', {'form': form, 'msg': msg})
+            mailchimp_api = mailchimp.Mailchimp(settings.MAILCHIMP_API_KEY)
+            try:
+                mailchimp_api.lists.subscribe('29b5ace6f2', {'email': email})
+                invites_list.append('Newsletter')
+            except mailchimp.ListAlreadySubscribedError:
+                errors.append('already subscribed to newsletter')
+
+            r = requests.get(
+                'https://civictools.appspot-preview.com/api/v1/invite',
+                params = {
+                    'teamId': '-Kd27R2-vkjuWxHEQ23A',
+                    'secret': settings.AMPLIFY_SECRET,
+                    'email': email
+                }
+            )
+            if not r.status_code == 200:
+                errors.append('Failed to send Amplify invite')
+            else:
+                invites_list.append('Amplify')
+            msg = ''
+            if errors:
+                msg += 'Errors: {}</br>'.format(', '.join(errors))
+            if invites_list:
+                msg += 'Invites sent for: {}'.format(', '.join(invites_list))
+
+            form = EmailForm
+            return render(request, 'index.html', {'form': form, 'msg': msg})
     else:
         raise Http404('method not allowed')
