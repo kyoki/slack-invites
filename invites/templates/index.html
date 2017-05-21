@@ -1,9 +1,11 @@
-<h1>Sign-up for our Slack</h1>
+<h1>Sign-up for our Slack, Newsletter and App</h1>
+
+<h2>Please note that sometimes our internet is very slow. You only need to hit the submit button once.</h2>
 
 {% if msg %}<p>{{ msg | safe }}<p/>{% endif %}
 
 <form action="/" method="post">
-{% csrf_token %}
-{{ form }}
+  {% csrf_token %}
+  {{ form }}
 <input type="submit" value="Get Invite" />
 </form>
