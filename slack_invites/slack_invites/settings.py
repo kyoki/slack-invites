@@ -113,3 +113,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+
+SLACK_TOKEN = os.environ.get('SLACK_TOKEN')
+MAILCHIMP_API_KEY = os.environ.get('MAILCHIMP_API_KEY')
+AMPLIFY_SECRET = os.environ.get('AMPLIFY_SECRET')
