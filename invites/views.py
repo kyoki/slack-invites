@@ -33,7 +33,7 @@ def index(request):
             invites_list = []
             data = json.loads(r.content)
             if 'ok' in data and not data['ok']:
-                errors.append(data['error'])
+                errors.append('Slack: {}'.format(data['error']))
             else:
                 invites_list.append('Slack')
 
@@ -42,7 +42,7 @@ def index(request):
                 mailchimp_api.lists.subscribe('29b5ace6f2', {'email': email})
                 invites_list.append('Newsletter')
             except mailchimp.ListAlreadySubscribedError:
-                pass
+                errors.append('Already subscribed to newsletter')
 
             r = requests.get(
                 'https://civictools.appspot-preview.com/api/v1/invite',
@@ -58,7 +58,7 @@ def index(request):
                 invites_list.append('Amplify')
             msg = ''
             if errors:
-                msg += 'Errors: {}</br>'.format(', '.join(errors))
+                msg += '{}</br>'.format(', '.join(errors))
             if invites_list:
                 msg += 'Invite(s) sent for: {}'.format(', '.join(invites_list))
 
