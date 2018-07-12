@@ -1,7 +1,7 @@
-from django import forms, widgets
+from django import forms
 
 class EmailForm(forms.Form):
-    email = forms.EmailField(required=True, widget=widgets.EmailInput(attrs={
+    email = forms.EmailField(required=True, widget=forms.EmailInput(attrs={
     	# Unsure why Django doesn't Just Do This for EmailInputs.
     	'type': 'email',
     	'inputmode': 'email',
