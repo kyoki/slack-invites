@@ -42,7 +42,9 @@ def index(request):
                 mailchimp_api.lists.subscribe('29b5ace6f2', {'email': email})
                 invites_list.append('Newsletter')
             except mailchimp.ListAlreadySubscribedError:
-                errors.append('Already subscribed to newsletter')
+                errors.append('Mailchimp: Already subscribed to newsletter')
+            except mailchimp.ListInvalidUnsubMemberError:
+                errors.append('Mailchimp: Previously unsubscribed from newsletter. Must independently resubscribe.')
 
             r = requests.get(
                 'https://civictools.appspot-preview.com/api/v1/invite',
